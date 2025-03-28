@@ -97,11 +97,11 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 ### Creating new react lib
 
-`nx g @nx/react:lib lib-name --importPath=@group_name/lib-name`
+`npx nx g @nx/react:lib lib-name --importPath=@group_name/lib-name`
 
 ### Renaming existing lib
 
-`nx g @nx/workspace:move --project old-library-name --destination new-library-name --importPath=@legosuite/new-library-name`
+`npx nx g @nx/workspace:move --project old-library-name --destination new-library-name --importPath=@legosuite/new-library-name`
 
 ### Removing existing app/lib
 
@@ -109,15 +109,15 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 ### Generate stories in banana-ui-react
 
-`nx g @nx/react:stories --project=<project-name>`
+`npx nx g @nx/react:stories --project=<project-name>`
 
 ### Generate JS lib
 
-`nx g @nx/js:lib lib_name --bundler=vite --importPath=@group_name/lib-name --publishable`
+`npx nx g @nx/js:lib lib_name --bundler=vite --importPath=@group_name/lib-name --publishable`
 
 ## Generate Node lib
 
-`nx g @nx/node:lib lib_name --importPath=@group_name/lib_name --publishable`
+`npx nx g @nx/node:lib lib_name --importPath=@group_name/lib_name --publishable`
 
 ### Create NX Workspace
 
@@ -129,7 +129,7 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 - yarn add -D @nx/react
 
-`nx g @nx/react:app xcube-client`
+`npx nx g @nx/react:app app_name`
 
 - styled-components (style system)
 - react-router (navigation)
@@ -147,14 +147,14 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 ### Create React Component Library
 
-`nx g @nx/react:lib react-components --importPath=@template-frameworks/react-components --publishable`
+`npx nx g @nx/react:lib react-components --importPath=@template-frameworks/react-components --publishable`
 
 - vitest (test runner)
 - vite (bundler)
 
 ### Create React Component inside Library
 
-`nx g @nx/react:component Button --project react-components`
+`npx nx g @nx/react:component Button --project react-components`
 
 - ✔ Should this component be exported in the project? (y/N) · true
 
