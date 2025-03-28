@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import { MetadataKeys } from './MetaData.constants'
-import { NextFunction } from 'express'
 import 'reflect-metadata'
 
 export enum HTTPMethod {
@@ -22,10 +21,7 @@ export const methodDecoratorFactory = (method: HTTPMethod) => {
   return (path: string, middlewares?: any[]): MethodDecorator => {
     return (target, propertyKey, descriptor: PropertyDescriptor) => {
       const controllerClass = target.constructor
-      const routers: IRouter[] = Reflect.hasMetadata(
-        MetadataKeys.ROUTERS,
-        controllerClass,
-      )
+      const routers: IRouter[] = Reflect.hasMetadata(MetadataKeys.ROUTERS, controllerClass)
         ? Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass)
         : []
       routers.push({
