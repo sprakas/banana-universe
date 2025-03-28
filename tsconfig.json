@@ -5,6 +5,9 @@
   "references": [
     {
       "path": "./apps/bananajs-demo"
+    },
+    {
+      "path": "./packages/bananajs"
     }
   ]
 }
