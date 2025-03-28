@@ -1,162 +1,115 @@
-# BananaUniverse
+**BananaJS** is an opinionated Node.js framework built on top of Express, designed to simplify the routing and dependency management for server-side applications. Inspired by frameworks like NestJS. The main focus of **BananaJS** is to reduce the complexity of routing by using decorators, providing a more readable and maintainable codebase.
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Features
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+- **Easy Routing with Decorators**: Simplifies the way routes are defined using decorators like `@Controller`, `@Get`, `@Post`, `@Put`, and `@Delete`.
+- **Improved Readability**: The use of decorators enhances code readability and reduces boilerplate.
+- **TypeScript Support**: Fully designed to work with TypeScript
+- **Built on Express**: Leverages the power of Express but adds additional structure and usability.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Prerequisites
 
-## Generate a library
+- **Node.js** (latest stable version)
+- **TypeScript** (preferably installed globally)
+- **Express** (must be installed before using the framework)
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
-```
+## Installation
 
-## Run tasks
+1. **Install Express** in your project:
 
-To build the library use:
+   ```bash
+   npm install express
 
-```sh
-npx nx build pkg1
-```
+   ```
 
-To run any task with Nx use:
+2. **Install BananaJS** in your project:
 
-```sh
-npx nx <target> <project-name>
-```
+   ```bash
+   npm install @banana-universe/bananajs
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+   ```
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+3. **Install TypeScript and Required Types**:
 
-## Versioning and releasing
+   If you haven't already, install TypeScript and the necessary type definitions for Express:
 
-To version and release the library use
+   ```bash
+   npm install typescript @types/node @types/express --save-dev
 
-```
-npx nx release
-```
+   ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+4. **Configure TypeScript**:
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+   In your `tsconfig.json`, enable `experimentalDecorators`:
 
-## Keep TypeScript project references up to date
+   ```json
+   {
+     "compilerOptions": {
+       "experimentalDecorators": true,
+       "target": "ES6",
+       "module": "commonjs",
+       "outDir": "./dist",
+       "rootDir": "./src",
+       "strict": true,
+       "esModuleInterop": true
+     },
+     "include": ["src/**/*"],
+     "exclude": ["node_modules"]
+   }
+   ```
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+## Usage
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
+### Setting Up the Application
 
-```sh
-npx nx sync
-```
+1. **Create the Routes File**:
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+   In the `src/routes.ts` (or any file you prefer), define your routes using the decorators provided by BananaJS.
 
-```sh
-npx nx sync:check
-```
+   ```typescript
+   import { Request, Response } from 'express'
+   import { Controller, Post, Get, Put, Delete } from '@banana-universe/bananajs'
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+   @Controller('/users')
+   export class UserController {
+     @Post('/')
+     async create(req: Request, res: Response) {
+       res.send({ message: 'Create User' })
+     }
 
-## Set up CI!
+     @Get('/list')
+     async list(req: Request, res: Response) {
+       res.send({ message: 'List all users' })
+     }
 
-### Step 1
+     @Get('/')
+     async get(req: Request, res: Response) {
+       res.send({ message: 'Get User 123456' })
+     }
 
-To connect to Nx Cloud, run the following command:
+     @Put('/')
+     async update(req: Request, res: Response) {
+       res.send({ message: 'Update User' })
+     }
 
-```sh
-npx nx connect
-```
+     @Delete('/')
+     async delete(req: Request, res: Response) {
+       res.send({ message: 'Delete User' })
+     }
+   }
+   ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+2. **Create the Application Entry File**:
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+   In your `src/index.ts` (or main file), initialize the app by importing `BananaApp` and passing in the routes.
 
-### Step 2
+   ```typescript
+   import BananaApp from '@banana-universe/bananajs'
+   import { Routes } from './routes'
 
-Use the following command to configure a CI workflow for your workspace:
+   const bananaApp = new BananaApp(Routes).getInstance()
 
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-### Creating new react lib
-
-`npx nx g @nx/react:lib lib-name --importPath=@group_name/lib-name`
-
-### Renaming existing lib
-
-`npx nx g @nx/workspace:move --project old-library-name --destination new-library-name --importPath=@legosuite/new-library-name`
-
-### Removing existing app/lib
-
-`npx nx g @nx/workspace:remove --project=library_or_app_name`
-
-### Generate stories in banana-ui-react
-
-`npx nx g @nx/react:stories --project=<project-name>`
-
-### Generate JS lib
-
-`npx nx g @nx/js:lib lib_name --bundler=vite --importPath=@group_name/lib-name --publishable`
-
-## Generate Node lib
-
-`npx nx g @nx/node:lib lib_name --importPath=@group_name/lib_name --publishable`
-
-### Create NX Workspace
-
-`npx create-nx-workspace@latest`
-
-- Select Integrated monorepo option
-
-### Create React App
-
-- yarn add -D @nx/react
-
-`npx nx g @nx/react:app app_name`
-
-- styled-components (style system)
-- react-router (navigation)
-- vite (bundler)
-
-### Create Next App
-
-- yarn add -D @nx/next
-
-`npx nx g @nx/next:app web --verbose --e2eTestRunner none --unitTestRunner none`
-
-- styled-components (style system)
-- App Router (yes)
-- `src/` directory (yes)
-
-### Create React Component Library
-
-`npx nx g @nx/react:lib react-components --importPath=@template-frameworks/react-components --publishable`
-
-- vitest (test runner)
-- vite (bundler)
-
-### Create React Component inside Library
-
-`npx nx g @nx/react:component Button --project react-components`
-
-- ✔ Should this component be exported in the project? (y/N) · true
-
-to get rid of black command prompts
-npx nx clear-cache
+   bananaApp.listen(3000, () => {
+     console.log('Server started on port 3000')
+   })
+   ```

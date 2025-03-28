@@ -2,7 +2,9 @@
   "name": "@banana-universe/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "publish:bananajs": "nx build bananajs && && cd packages/bananajs && npm publish --access public"
+  },
   "private": true,
   "dependencies": {
     "axios": "^1.6.0",

@@ -1,6 +1,14 @@
 {
   "name": "@banana-universe/bananajs",
-  "version": "0.0.1",
+  "description": "An opinionated Node.js framework built on Express, designed for simplicity, scalability, and ease of use in building server-side applications.",
+  "author": "Surya Prakash Manne",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sprakas/banana-universe.git"
+  },
+  "homepage": "https://github.com/sprakas/banana-universe/tree/main/packages/bananajs",
+  "license": "MIT",
+  "version": "0.0.3",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -17,7 +25,11 @@
     "dist",
     "!**/*.tsbuildinfo"
   ],
+  "peerDependencies": {
+    "express": "^4.21.2"
+  },
   "dependencies": {
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "reflect-metadata": "^0.2.2"
   }
 }
