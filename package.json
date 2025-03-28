@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "publish:bananajs": "nx build bananajs && && cd packages/bananajs && npm publish --access public"
+    "publish:bananajs": "nx build bananajs && cd packages/bananajs && npm publish --access public"
   },
   "private": true,
   "dependencies": {
