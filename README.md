@@ -4,7 +4,7 @@
 
 ✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
 ## Generate a library
 
@@ -95,15 +95,68 @@ Nx Console is an editor extension that enriches your developer experience. It le
 
 ## Useful links
 
-Learn more:
+### Creating new react lib
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+`nx g @nx/react:lib lib-name --importPath=@group_name/lib-name`
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### Renaming existing lib
+
+`nx g @nx/workspace:move --project old-library-name --destination new-library-name --importPath=@legosuite/new-library-name`
+
+### Removing existing app/lib
+
+`npx nx g @nx/workspace:remove --project=library_or_app_name`
+
+### Generate stories in banana-ui-react
+
+`nx g @nx/react:stories --project=<project-name>`
+
+### Generate JS lib
+
+`nx g @nx/js:lib lib_name --bundler=vite --importPath=@group_name/lib-name --publishable`
+
+## Generate Node lib
+
+`nx g @nx/node:lib lib_name --importPath=@group_name/lib_name --publishable`
+
+### Create NX Workspace
+
+`npx create-nx-workspace@latest`
+
+- Select Integrated monorepo option
+
+### Create React App
+
+- yarn add -D @nx/react
+
+`nx g @nx/react:app xcube-client`
+
+- styled-components (style system)
+- react-router (navigation)
+- vite (bundler)
+
+### Create Next App
+
+- yarn add -D @nx/next
+
+`npx nx g @nx/next:app web --verbose --e2eTestRunner none --unitTestRunner none`
+
+- styled-components (style system)
+- App Router (yes)
+- `src/` directory (yes)
+
+### Create React Component Library
+
+`nx g @nx/react:lib react-components --importPath=@template-frameworks/react-components --publishable`
+
+- vitest (test runner)
+- vite (bundler)
+
+### Create React Component inside Library
+
+`nx g @nx/react:component Button --project react-components`
+
+- ✔ Should this component be exported in the project? (y/N) · true
+
+to get rid of black command prompts
+npx nx clear-cache
