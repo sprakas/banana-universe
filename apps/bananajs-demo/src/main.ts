@@ -1,21 +1,8 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
+import BananaApp from '@banana-universe/bananajs'
+import { Routes } from './routes'
 
-import express from 'express';
-import * as path from 'path';
+const bananaApp = new BananaApp(Routes).getInstance()
 
-const app = express();
-
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
-
-app.get('/api', (req, res) => {
-  res.send({ message: 'Welcome to bananajs-demo!' });
-});
-
-const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
-});
-server.on('error', console.error);
+bananaApp.listen(3000, () => {
+  console.log('Server started on port 3000')
+})

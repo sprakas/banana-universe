@@ -1,7 +1,7 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { Application, Router } from 'express';
-import { IRouter } from '../Router/Route.decorator';
-import { MetadataKeys } from '../Router/MetaData.constants';
+import express, { NextFunction, Request, Response } from 'express'
+import { Application, Router } from 'express'
+import { IRouter } from '../Router/Route.decorator'
+import { MetadataKeys } from '../Router/MetaData.constants'
 /**
  * The BananaApp class is an Express.js application class that initializes an Express app and registers controllers with their respective routes.
  * @param {any[]} controllers - An array of controller classes to register with the app.
@@ -10,12 +10,12 @@ import { MetadataKeys } from '../Router/MetaData.constants';
  */
 
 export class BananaApp {
-  private app: Application;
+  private app: Application
 
   constructor(controllers: { new (): any }[]) {
-    this.app = express();
+    this.app = express()
 
-    this.initializeControllers(controllers);
+    this.initializeControllers(controllers)
   }
 
   /**
@@ -34,39 +34,28 @@ export class BananaApp {
    */
   private initializeControllers(controllers: { new (): any }[]) {
     controllers.forEach((controllerClass) => {
-      const controllerInstance: { [handleName: string]: any } =
-        new controllerClass() as any;
-      const basePath: string = Reflect.getMetadata(
-        MetadataKeys.BASE_PATH,
-        controllerClass
-      );
-      const routers: IRouter[] = Reflect.getMetadata(
-        MetadataKeys.ROUTERS,
-        controllerClass
-      );
-      const router = Router();
+      const controllerInstance: { [handleName: string]: any } = new controllerClass() as any
+      const basePath: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, controllerClass)
+      const routers: IRouter[] = Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass)
+      const router = Router()
       routers.forEach(({ method, path, handlerName, middlewares = [] }) => {
         router[method](
           path,
           middlewares,
           async (req: Request, res: Response, next: NextFunction) => {
             try {
-              return await controllerInstance[String(handlerName)](
-                req,
-                res,
-                next
-              );
+              return await controllerInstance[String(handlerName)](req, res, next)
             } catch (error) {
-              next(error); // Pass any errors to the Express error handling middleware
+              next(error) // Pass any errors to the Express error handling middleware
             }
-          }
-        );
-      });
-      this.app.use(basePath, router);
-    });
+          },
+        )
+      })
+      this.app.use(basePath, router)
+    })
   }
 
   public getInstance() {
-    return this.app;
+    return this.app
   }
 }
