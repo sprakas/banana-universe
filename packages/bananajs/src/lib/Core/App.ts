@@ -15,6 +15,10 @@ export class BananaApp {
   constructor(controllers: { new (): any }[]) {
     this.app = express()
 
+    this.app.use(express.json())
+
+    this.app.use(express.urlencoded({ extended: true }))
+
     this.initializeControllers(controllers)
   }
 
@@ -34,7 +38,7 @@ export class BananaApp {
    */
   private initializeControllers(controllers: { new (): any }[]) {
     controllers.forEach((controllerClass) => {
-      const controllerInstance: { [handleName: string]: any } = new controllerClass() as any
+      const controllerInstance: { [handleName: string]: any } = new controllerClass()
       const basePath: string = Reflect.getMetadata(MetadataKeys.BASE_PATH, controllerClass)
       const routers: IRouter[] = Reflect.getMetadata(MetadataKeys.ROUTERS, controllerClass)
       const router = Router()

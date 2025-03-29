@@ -1,31 +1,38 @@
-**BananaJS** is an opinionated Node.js framework built on top of Express, designed to simplify the routing and dependency management for server-side applications. Inspired by frameworks like NestJS. The main focus of **BananaJS** is to reduce the complexity of routing by using decorators, providing a more readable and maintainable codebase.
+**BananaJS** is an opinionated Node.js framework built on top of Express, designed to simplify routing for server-side applications. Inspired by frameworks like NestJS, BananaJS focuses on reducing the complexity of routing by using decorators, providing a more readable and maintainable codebase. It also includes powerful data validation capabilities through class-validator, making it easy to validate incoming request data such as body, query parameters, and path parameters.
+
+The combination of simplified routing and automatic validation enhances productivity, reduces boilerplate code, and improves the overall structure and readability of your application.
 
 ## Features
 
 - **Easy Routing with Decorators**: Simplifies the way routes are defined using decorators like `@Controller`, `@Get`, `@Post`, `@Put`, and `@Delete`.
+- **Validation with Decorators**: Use @Body, @Params, and @Query decorators in combination with class-validator to validate request data explicitly. This ensures that data adheres to predefined validation rules.
 - **Improved Readability**: The use of decorators enhances code readability and reduces boilerplate.
 - **TypeScript Support**: Fully designed to work with TypeScript
 - **Built on Express**: Leverages the power of Express but adds additional structure and usability.
 
 ## Prerequisites
 
-- **Node.js** (latest stable version)
-- **TypeScript** (preferably installed globally)
-- **Express** (must be installed before using the framework)
+- **Node.js**
+- **TypeScript**
+
+## Mandatory Dependencies
+
+- **Express**
+- **class-validator** (for request data validation)
 
 ## Installation
 
-1. **Install Express** in your project:
-
-   ```bash
-   npm install express
-
-   ```
-
-2. **Install BananaJS** in your project:
+1. **Install BananaJS** in your project:
 
    ```bash
    npm install @banana-universe/bananajs
+
+   ```
+
+2. **Install Mandatory dependencies** in your project:
+
+   ```bash
+   npm install express class-validator
 
    ```
 
@@ -60,54 +67,98 @@
 
 ## Usage
 
+Example: https://github.com/sprakas/banana-universe/tree/main/apps/bananajs-demo
+
 ### Setting Up the Application
 
-1. **Create the Routes File**:
+1. **Create the Controller File**:
 
-   In the `src/routes.ts` (or any file you prefer), define your routes using the decorators provided by BananaJS.
+   In the `src/App/User/User.controller.ts` (or any file you prefer), define your apis using the decorators provided by BananaJS.
 
-   ```typescript
-   import { Request, Response } from 'express'
-   import { Controller, Post, Get, Put, Delete } from '@banana-universe/bananajs'
+```typescript
+import { Request, Response } from 'express'
+import { Controller, Post, Get, Put, Delete, Body, Params, Query } from '@banana-universe/bananajs'
+import { CreateUserDto, GetUserByIdDto, GetUserListDto } from './dto'
 
-   @Controller('/users')
-   export class UserController {
-     @Post('/')
-     async create(req: Request, res: Response) {
-       res.send({ message: 'Create User' })
-     }
+@Controller('/users')
+export class UserController {
+  @Post('/')
+  @Body(CreateUserDto)
+  async create(req: Request, res: Response) {
+    res.send({ message: 'Create User' })
+  }
 
-     @Get('/list')
-     async list(req: Request, res: Response) {
-       res.send({ message: 'List all users' })
-     }
+  @Get('/list')
+  @Query(GetUserListDto)
+  async list(req: Request, res: Response) {
+    res.send({
+      message: `List all users from page: ${req.query.page} and limit: ${req.query.limit}`,
+    })
+  }
 
-     @Get('/')
-     async get(req: Request, res: Response) {
-       res.send({ message: 'Get User 123456' })
-     }
+  @Get('/:id')
+  @Params(GetUserByIdDto)
+  async get(req: Request, res: Response) {
+    res.send({ message: `Get User by id: ${req.params.id}` })
+  }
 
-     @Put('/')
-     async update(req: Request, res: Response) {
-       res.send({ message: 'Update User' })
-     }
+  @Put('/')
+  async update(req: Request, res: Response) {
+    res.send({ message: 'Update User' })
+  }
 
-     @Delete('/')
-     async delete(req: Request, res: Response) {
-       res.send({ message: 'Delete User' })
-     }
-   }
-   ```
+  @Delete('/')
+  async delete(req: Request, res: Response) {
+    res.send({ message: 'Delete User' })
+  }
+}
+```
 
-2. **Create the Application Entry File**:
+### Step 2: Create the DTO File
+
+Use `class-validator` to define and validate your DTOs for each request type (body, query, params).
+
+`src/App/User/User.dto.ts`
+
+```typescript
+import { IsEmail, IsString, Length } from 'class-validator'
+
+export class CreateUserDto {
+  @Length(3, 20)
+  @IsString()
+  name!: string
+
+  @IsEmail()
+  @Length(0, 50)
+  email!: string
+
+  @IsString()
+  password!: string
+}
+
+export class GetUserByIdDto {
+  @IsString()
+  id!: string
+}
+
+export class GetUserListDto {
+  @IsString()
+  page!: string
+
+  @IsString()
+  limit!: string
+}
+```
+
+3. **Create the Application Entry File**:
 
    In your `src/index.ts` (or main file), initialize the app by importing `BananaApp` and passing in the routes.
 
    ```typescript
    import BananaApp from '@banana-universe/bananajs'
-   import { Routes } from './routes'
+   import { UserController } from './routes'
 
-   const bananaApp = new BananaApp(Routes).getInstance()
+   const bananaApp = new BananaApp([UserController]).getInstance()
 
    bananaApp.listen(3000, () => {
      console.log('Server started on port 3000')
