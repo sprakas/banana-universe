@@ -8,6 +8,9 @@
     },
     {
       "path": "./packages/bananajs"
+    },
+    {
+      "path": "./packages/bananajs-cli"
     }
   ]
 }
