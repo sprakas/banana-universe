@@ -1,6 +1,6 @@
 {
   "name": "@banana-universe/bananajs-cli",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "bin": {
     "bananajs": "./dist/index.js"
   },
@@ -21,8 +21,9 @@
     "!**/*.tsbuildinfo"
   ],
   "dependencies": {
-    "tslib": "^2.3.0",
-    "chalk": "4.1.2"
+    "chalk": "4.1.2",
+    "inquirer": "^12.5.2",
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "typescript": "~5.2.2"
