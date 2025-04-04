@@ -31,7 +31,7 @@ npm install --save-dev bananajs-cli
 Once the CLI is installed, you can use it to create a new app by running the following command:
 
 ```
-bananajs-cli new
+bananajs new
 ```
 
 The tool will prompt you to input the name of your app and select a configuration type.
@@ -61,7 +61,7 @@ Here’s an example of how to create a new app with the bananajs-cli:
 1. Run the command:
 
 ```
-bananajs-cli new
+bananajs new
 ```
 
 2. You will be prompted to enter the name of the app and choose the configuration:
