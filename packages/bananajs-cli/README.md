@@ -17,13 +17,13 @@ To get started with Bananajs CLI, you'll need to install it globally on your sys
 ### **Install globally with npm:**
 
 ```
-npm install -g bananajs-cli
+npm install -g @banana-universe/bananajs-cli
 ```
 
 ### **Or install it as a dev dependency:**
 
 ```
-npm install --save-dev bananajs-cli
+npm install --save-dev @banana-universe/bananajs-cli
 ```
 
 ## **Usage**

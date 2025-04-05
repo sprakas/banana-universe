@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import { Application, Router } from 'express'
 import { IRouter } from '../Router/Route.decorator'
 import { MetadataKeys } from '../Router/MetaData.constants'
+import { ErrorMiddleware } from '../Error/Error.middleware'
 /**
  * The BananaApp class is an Express.js application class that initializes an Express app and registers controllers with their respective routes.
  * @param {any[]} controllers - An array of controller classes to register with the app.
@@ -20,6 +21,8 @@ export class BananaApp {
     this.app.use(express.urlencoded({ extended: true }))
 
     this.initializeControllers(controllers)
+
+    this.app.use(ErrorMiddleware)
   }
 
   /**
