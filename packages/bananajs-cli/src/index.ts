@@ -6,7 +6,8 @@ import chalk from 'chalk'
 import { spawn } from 'child_process'
 import inquirer from 'inquirer'
 
-const TEMPLATE_REPO = 'https://github.com/sprakas/bananajs-mongo-app-template.git'
+const MONGO_TEMPLATE_REPO = 'https://github.com/sprakas/bananajs-mongo-app-template.git'
+const SQL_TEMPLATE_REPO = 'https://github.com/sprakas/bananajs-sql-app-template.git'
 
 async function createApp() {
   const { appName, templateType } = await inquirer.prompt([
@@ -42,23 +43,23 @@ async function createApp() {
 
   try {
     if (templateType === 'MongoDB') {
-      await setupAppConfiguration(appDir)
+      await setupAppConfiguration(appDir, appName, MONGO_TEMPLATE_REPO)
     } else {
-      console.log(chalk.yellow(`Coming soon: ${templateType}.`))
-      await fs.rmdir(appDir, { recursive: true })
-      process.exit(1)
+      await setupAppConfiguration(appDir, appName, SQL_TEMPLATE_REPO)
     }
   } catch (error) {
     console.error('Error creating app:', error)
+    console.log(chalk.yellow(`Make sure to available git on your cli before running the command.`))
     await fs.rmdir(appDir, { recursive: true })
+
     process.exit(1)
   }
 }
 
-async function setupAppConfiguration(appDir: string) {
+async function setupAppConfiguration(appDir: string, appName: string, repo: string) {
   try {
     await new Promise<void>((resolve, reject) => {
-      const gitSetup = spawn('git', ['clone', '--progress', TEMPLATE_REPO, appDir])
+      const gitSetup = spawn('git', ['clone', '--depth', '1', '--progress', repo, appDir])
 
       gitSetup.stderr.on('data', (data) => {
         const output = data.toString()
@@ -70,7 +71,12 @@ async function setupAppConfiguration(appDir: string) {
 
       gitSetup.on('close', (code) => {
         if (code === 0) {
-          console.log(chalk.green(`App "${appDir}" created successfully!`))
+          console.log(chalk.green(`App "${appName}" created successfully!`))
+
+          // Delete the .git folder to remove the git history of the template repo
+          const gitFolderPath = path.join(appDir, '.git')
+          fs.rm(gitFolderPath, { recursive: true, force: true })
+
           resolve()
         } else {
           console.log(chalk.red(`Failed to create the app with exit code ${code}.`))
